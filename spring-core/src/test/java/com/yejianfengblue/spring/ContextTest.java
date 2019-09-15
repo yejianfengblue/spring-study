@@ -1,6 +1,6 @@
 package com.yejianfengblue.spring;
 
-import com.yejianfengblue.spring.config.BeanConfig;
+import com.yejianfengblue.spring.config.AppConfig;
 import com.yejianfengblue.spring.service.MyService;
 import com.yejianfengblue.spring.service.MyServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -8,12 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author yejianfengblue
  */
-@SpringJUnitConfig(BeanConfig.class)
+@SpringJUnitConfig(AppConfig.class)
 class ContextTest {
 
     @Autowired
