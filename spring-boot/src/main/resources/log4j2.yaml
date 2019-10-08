@@ -1,0 +1,41 @@
+Configutation:
+  name: Default
+
+  Properties:
+    Property:
+      name: baseDir
+      value: "log"
+
+  Appenders:
+
+    Console:
+      name: STDOUT
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
+
+    RollingFile:
+      - name: RollingFile
+        fileName: ${baseDir}/spring-boot.log
+        filePattern: "${baseDir}/archive/spring-boot.log.%d{yyyy-MM-dd}.zip"
+        PatternLayout:
+          pattern: "[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n"
+        Policies:
+          TimeBasedTriggeringPolicy: {}
+        DefaultRollOverStrategy:
+          max: 30
+
+  Loggers:
+
+    Root:
+      level: info
+      AppenderRef:
+        - ref: STDOUT
+
+    Logger:
+      - name: com.yejianfengblue.spring
+        additivity: false
+        level: trace
+        AppenderRef:
+          - ref: STDOUT
+          - ref: RollingFile
