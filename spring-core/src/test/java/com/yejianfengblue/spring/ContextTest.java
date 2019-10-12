@@ -6,6 +6,7 @@ import com.yejianfengblue.spring.service.MyServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,6 +27,11 @@ class ContextTest {
     @Test
     void givenAppContext_WhenInjected_ThenItShouldNotBeNull() {
         assertNotNull(applicationContext);
+    }
+
+    @Test
+    void givenSpringJUnitConfig_WhenLoadContextFromClass_ThenLoadedContextClassIsGenericApplicationContext() {
+        assertEquals(GenericApplicationContext.class, applicationContext.getClass());
     }
 
     @Test
