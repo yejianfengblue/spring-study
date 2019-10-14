@@ -1,5 +1,7 @@
 package com.yejianfengblue.spring.bean;
 
+import com.yejianfengblue.spring.validation.IsFltDate;
+import com.yejianfengblue.spring.validation.IsNumber;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -25,4 +27,10 @@ public class ValidatedBean {
 
     @Pattern(regexp = "[IO]", message = "is not 'I' or 'O'")
     private String inOutInd;
+
+    @IsFltDate
+    private String fltDateString;
+
+    @IsNumber
+    private String numberString;
 }
