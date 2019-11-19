@@ -23,7 +23,7 @@ public class Employee {
     private BigDecimal salary;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "company_id", nullable = false)
     @ToString.Exclude
     private Company company;
 }
