@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
@@ -37,7 +36,7 @@ class JpaTest {
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Test
-    void givenNewCreated1CompanyWith2Employee_whenDetachAndFindAgain_thenNotSameObject() {
+    void givenNewCreated1CompanyWith2Employee_whenDetachAndFindAgain_thenEqualsButNotSameObject() {
 
         // given
         Company magicianGirls = new Company();
@@ -45,11 +44,11 @@ class JpaTest {
 
         Employee apple = new Employee();
         apple.setName("Apple Magician Girl");
-        apple.setSalary(new BigDecimal(1000));
+        apple.setSalary(1000);
         apple.setCompany(magicianGirls);
         Employee berry = new Employee();
         berry.setName("Berry Magician Girl");
-        berry.setSalary(new BigDecimal(2000));
+        berry.setSalary(2000);
         berry.setCompany(magicianGirls);
         magicianGirls.setEmployees(List.of(apple, berry));
 
@@ -57,13 +56,19 @@ class JpaTest {
         Optional<Company> foundMagicianGirls = companyRepos.findByName("Magician Girls");
         assertTrue(foundMagicianGirls.isPresent());
         assertSame(magicianGirls, foundMagicianGirls.get());
-
         // when
         entityManager.detach(magicianGirls);
 
         // then
         Optional<Company> foundMagicianGirlsAfterDetach = companyRepos.findByName("Magician Girls");
         assertTrue(foundMagicianGirlsAfterDetach.isPresent());
+        // after detach and find again, not the same object
         assertNotSame(magicianGirls, foundMagicianGirlsAfterDetach.get());
+        // the collection member is deep equals
+        assertIterableEquals(magicianGirls.getEmployees(), foundMagicianGirlsAfterDetach.get().getEmployees());
+        // the collection member is not equals, because the collection classes like PersistentBag or PersistentList
+        // from Hibernate don't override equals() and hashCode()
+        assertNotEquals(magicianGirls.getEmployees(), foundMagicianGirlsAfterDetach.get().getEmployees());
+        // so impossible to assertEquals against the Company objects
     }
 }
