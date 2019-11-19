@@ -18,6 +18,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "EMPLOYEE_ID_SEQ_GEN")
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
     private BigDecimal salary;

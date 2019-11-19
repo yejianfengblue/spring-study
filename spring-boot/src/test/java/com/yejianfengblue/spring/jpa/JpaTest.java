@@ -37,20 +37,6 @@ class JpaTest {
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Test
-    void givenSavedEmployeeEntity_whenFindFromRepos_thenSameObject() {
-
-        Employee apple = new Employee();
-        apple.setName("Apple");
-        apple.setSalary(new BigDecimal(100));
-        Employee savedApple = employeeRepos.save(apple);
-        assertSame(apple, savedApple);
-        employeeRepos.flush();
-        Optional<Employee> foundApple = employeeRepos.findById(savedApple.getId());
-        assertTrue(foundApple.isPresent());
-        assertSame(apple, foundApple.get());
-    }
-
-    @Test
     void givenNewCreated1CompanyWith2Employee_whenDetachAndFindAgain_thenNotSameObject() {
 
         // given

@@ -17,6 +17,7 @@ public class Company {
     @GeneratedValue
     private UUID id;
 
+    @Column(nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
