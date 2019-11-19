@@ -1,6 +1,7 @@
 package com.yejianfengblue.spring.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import javax.persistence.*;
@@ -20,4 +21,9 @@ public class Employee {
     private String name;
 
     private BigDecimal salary;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id")
+    @ToString.Exclude
+    private Company company;
 }

@@ -4,6 +4,7 @@ import com.yejianfengblue.spring.entity.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -11,4 +12,6 @@ import java.util.UUID;
  */
 @Repository
 public interface CompanyRepos extends JpaRepository<Company, UUID> {
+
+    Optional<Company> findByName(String name);
 }

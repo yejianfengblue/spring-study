@@ -2,10 +2,9 @@ package com.yejianfengblue.spring.entity;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.UUID;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * @author yejianfengblue
@@ -19,4 +18,7 @@ public class Company {
     private UUID id;
 
     private String name;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<Employee> employees;
 }
