@@ -47,7 +47,7 @@ class JpaTest {
         employeeRepos.flush();
         Optional<Employee> foundApple = employeeRepos.findById(savedApple.getId());
         assertTrue(foundApple.isPresent());
-        assertSame(apple, foundApple);
+        assertSame(apple, foundApple.get());
     }
 
     @Test
