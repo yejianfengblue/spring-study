@@ -11,7 +11,7 @@
 	<groupId>com.yejianfengblue</groupId>
 	<artifactId>spring</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring</name>
+	<name>boot</name>
 	<description>Self-study project for Spring Boot, Spring Framework features, and other Spring projects which would be tested more conveniently with Spring Boot</description>
 
 	<properties>
