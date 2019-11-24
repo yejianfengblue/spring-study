@@ -7,16 +7,18 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author yejianfengblue
  */
-@DataJpaTest(showSql = false)  // show sql and param is enabled in app.prop by setting hibernate logging level
+@SpringBootTest
+@Transactional
 class JpaTest {
 
     @Autowired
@@ -31,7 +33,7 @@ class JpaTest {
     private static class MyEntity {
 
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @GeneratedValue(strategy = GenerationType.SEQUENCE)
         private Long id;
 
         private String myColumn;
@@ -53,5 +55,17 @@ class JpaTest {
         MyEntity foundMyEntity = entityManager.find(MyEntity.class, myEntity.getId());
         log.info("foundMyEntity find by Id {} = {}", myEntity.getId(), foundMyEntity);
         assertNotNull(foundMyEntity);
+    }
+
+    @Test
+    void insertMultipleEntities() {
+
+        for (long i = 0; i < 22; i++) {
+
+            MyEntity myEntity = new MyEntity();
+            myEntity.setMyColumn("dummy " + i);
+            entityManager.persist(myEntity);
+        }
+        entityManager.flush();
     }
 }

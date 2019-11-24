@@ -7,9 +7,9 @@ spring:
       hibernate:
         format_sql: true
         use_sql_comments: true
+        jdbc:
+          batch_size: 10
 
 logging:
   level:
     com.yejianfengblue.spring: debug
-    org.hibernate.SQL: debug
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
