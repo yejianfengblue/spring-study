@@ -2,9 +2,4 @@ spring:
   main:
     banner-mode: "off"
 
-logging:
-  file:
-    name: log/boot.log
-  level:
-    root: info
-    com.yejianfengblue.spring: info
+  profiles: local

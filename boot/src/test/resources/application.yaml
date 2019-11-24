@@ -1,0 +1,9 @@
+spring:
+  main:
+    banner-mode: "off"
+
+logging:
+  level:
+    com.yejianfengblue.spring: debug
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
