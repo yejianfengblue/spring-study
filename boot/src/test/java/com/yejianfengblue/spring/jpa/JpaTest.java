@@ -3,15 +3,19 @@ package com.yejianfengblue.spring.jpa;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import net.ttddyy.dsproxy.QueryCount;
+import net.ttddyy.dsproxy.QueryCountHolder;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
@@ -58,14 +62,20 @@ class JpaTest {
     }
 
     @Test
-    void insertMultipleEntities() {
+    void insertMultipleEntities(@Value("${spring.jpa.properties.hibernate.jdbc.batch_size}") int batchSize) {
 
-        for (long i = 0; i < 22; i++) {
+        int entityTotal = 22;
+        for (long i = 0; i < entityTotal; i++) {
 
             MyEntity myEntity = new MyEntity();
             myEntity.setMyColumn("dummy " + i);
             entityManager.persist(myEntity);
         }
         entityManager.flush();
+        QueryCount queryGrandTotal = QueryCountHolder.getGrandTotal();
+        // 3 insert batches are executed
+        long batchCount = (long)Math.ceil((double)entityTotal / batchSize);
+        assertEquals(batchCount, queryGrandTotal.getInsert());
+        QueryCountHolder.clear();
     }
 }

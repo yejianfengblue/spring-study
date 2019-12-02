@@ -51,6 +51,7 @@ public class DatasourceProxyBeanPostProcessor implements BeanPostProcessor {
                     .name("MyDS")
                     .multiline()
                     .logQueryBySlf4j(SLF4JLogLevel.INFO)
+                    .countQuery()
                     .build();
         }
 
