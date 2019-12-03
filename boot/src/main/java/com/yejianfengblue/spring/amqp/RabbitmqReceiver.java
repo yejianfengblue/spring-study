@@ -44,9 +44,9 @@ public class RabbitmqReceiver {
     public static class RabbitQueueConfig {
 
         @Bean
-        public DirectExchange directExchange() {
+        public TopicExchange directExchange() {
 
-            return new DirectExchange("my-channel-exchange");
+            return new TopicExchange("ygo-exchange");
         }
 
         @Bean
@@ -55,31 +55,31 @@ public class RabbitmqReceiver {
             return new AnonymousQueue();
         }
 
-        @Profile("bind-red")
+        @Profile("bind-monster-dark")
         @Bean
-        public Binding bindingRed(DirectExchange directExchange, Queue queue) {
+        public Binding bindingMonsterDark(TopicExchange topicExchange, Queue queue) {
 
             return BindingBuilder.bind(queue)
-                    .to(directExchange)
-                    .with(RoutingKey.RED);
+                    .to(topicExchange)
+                    .with("*.dark.*");
         }
 
-        @Profile("bind-green")
+        @Profile("bind-monster-fusion")
         @Bean
-        public Binding bindingGreen(DirectExchange directExchange, Queue queue) {
+        public Binding bindingMonsterFusion(TopicExchange topicExchange, Queue queue) {
 
             return BindingBuilder.bind(queue)
-                    .to(directExchange)
-                    .with(RoutingKey.GREEN);
+                    .to(topicExchange)
+                    .with("fusion.*.*");
         }
 
-        @Profile("bind-blue")
+        @Profile("bind-monster-light-dragon")
         @Bean
-        public Binding bindingBlue(DirectExchange directExchange, Queue queue) {
+        public Binding bindingMonsterLightDragon(TopicExchange topicExchange, Queue queue) {
 
             return BindingBuilder.bind(queue)
-                    .to(directExchange)
-                    .with(RoutingKey.BLUE);
+                    .to(topicExchange)
+                    .with("*.light.dragon");
         }
     }
 }

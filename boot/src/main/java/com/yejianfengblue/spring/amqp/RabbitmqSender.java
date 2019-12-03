@@ -20,6 +20,23 @@ public class RabbitmqSender {
 
     private final RabbitTemplate rabbitTemplate;
 
+    private final String[] monsterCardRoutingKeys = {
+            "normal.dark.spellcaster",
+            "normal.dark.dragon",
+            "normal.light.spellcaster",
+            "normal.light.dragon",
+
+            "effect.dark.spellcaster",
+            "effect.dark.dragon",
+            "effect.light.spellcaster",
+            "effect.light.dragon",
+
+            "fusion.dark.spellcaster",
+            "fusion.dark.dragon",
+            "fusion.light.spellcaster",
+            "fusion.light.dragon"
+    };
+
     private AtomicInteger messageCounter = new AtomicInteger(0);
 
     private AtomicInteger dotCounter = new AtomicInteger(0);
@@ -41,17 +58,17 @@ public class RabbitmqSender {
             messageBuilder.append('.');
         }
 
-        String exchange = "my-channel-exchange";
-        String routingKeyStr = RoutingKey.values()[messageCounter.get()%3].toString();
-        messageBuilder.append(routingKeyStr);
+        String exchange = "ygo-exchange";
+        String routingKey = monsterCardRoutingKeys[messageCounter.get()%12];
+        messageBuilder.append(routingKey);
         String message = messageBuilder.toString();
         rabbitTemplate.convertAndSend(
                 exchange,
-                routingKeyStr,
+                routingKey,
                 message);
         log.info("[x] sent '{}' to exchange {} with routingKey {}",
                 message,
                 exchange,
-                routingKeyStr);
+                routingKey);
     }
 }
