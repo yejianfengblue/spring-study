@@ -41,8 +41,17 @@ public class RabbitmqSender {
             messageBuilder.append('.');
         }
 
+        String exchange = "my-channel-exchange";
+        String routingKeyStr = RoutingKey.values()[messageCounter.get()%3].toString();
+        messageBuilder.append(routingKeyStr);
         String message = messageBuilder.toString();
-        rabbitTemplate.convertAndSend("my-channel-exchange", "", message);
-        log.info("[x] sent '{}' to fanout {}", message, "my-channel-exchange");
+        rabbitTemplate.convertAndSend(
+                exchange,
+                routingKeyStr,
+                message);
+        log.info("[x] sent '{}' to exchange {} with routingKey {}",
+                message,
+                exchange,
+                routingKeyStr);
     }
 }

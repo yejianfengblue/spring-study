@@ -44,9 +44,9 @@ public class RabbitmqReceiver {
     public static class RabbitQueueConfig {
 
         @Bean
-        public FanoutExchange fanout() {
+        public DirectExchange directExchange() {
 
-            return new FanoutExchange("my-channel-exchange");
+            return new DirectExchange("my-channel-exchange");
         }
 
         @Bean
@@ -55,10 +55,31 @@ public class RabbitmqReceiver {
             return new AnonymousQueue();
         }
 
+        @Profile("bind-red")
         @Bean
-        public Binding binding(FanoutExchange fanout, Queue queue) {
+        public Binding bindingRed(DirectExchange directExchange, Queue queue) {
 
-            return BindingBuilder.bind(queue).to(fanout);
+            return BindingBuilder.bind(queue)
+                    .to(directExchange)
+                    .with(RoutingKey.RED);
+        }
+
+        @Profile("bind-green")
+        @Bean
+        public Binding bindingGreen(DirectExchange directExchange, Queue queue) {
+
+            return BindingBuilder.bind(queue)
+                    .to(directExchange)
+                    .with(RoutingKey.GREEN);
+        }
+
+        @Profile("bind-blue")
+        @Bean
+        public Binding bindingBlue(DirectExchange directExchange, Queue queue) {
+
+            return BindingBuilder.bind(queue)
+                    .to(directExchange)
+                    .with(RoutingKey.BLUE);
         }
     }
 }
