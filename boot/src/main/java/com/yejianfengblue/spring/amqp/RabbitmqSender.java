@@ -42,7 +42,7 @@ public class RabbitmqSender {
         }
 
         String message = messageBuilder.toString();
-        rabbitTemplate.convertAndSend("hello", message);
-        log.info("[x] sent '{}", message);
+        rabbitTemplate.convertAndSend("my-channel-exchange", "", message);
+        log.info("[x] sent '{}' to fanout {}", message, "my-channel-exchange");
     }
 }

@@ -3,8 +3,7 @@ package com.yejianfengblue.spring.amqp;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,12 +16,11 @@ import org.springframework.util.StopWatch;
  */
 @Component
 @Profile("rabbitmq-receiver")
-@RabbitListener(queues = "hello")
 public class RabbitmqReceiver {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    @RabbitHandler
+    @RabbitListener(queues = "#{autoDeleteQueue.name}")
     public void receive(String message) throws InterruptedException {
 
         StopWatch stopWatch = new StopWatch();
@@ -41,13 +39,26 @@ public class RabbitmqReceiver {
         Thread.sleep(StringUtils.countMatches(message, '.') * 1000);
     }
 
+    @Profile("rabbitmq-receiver")
     @Configuration
     public static class RabbitQueueConfig {
 
         @Bean
-        public Queue helloQueue() {
+        public FanoutExchange fanout() {
 
-            return new Queue("hello");
+            return new FanoutExchange("my-channel-exchange");
+        }
+
+        @Bean
+        public Queue autoDeleteQueue() {
+
+            return new AnonymousQueue();
+        }
+
+        @Bean
+        public Binding binding(FanoutExchange fanout, Queue queue) {
+
+            return BindingBuilder.bind(queue).to(fanout);
         }
     }
 }
